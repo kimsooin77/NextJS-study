@@ -53,3 +53,4 @@ AppLayout.prototype = {
 export default AppLayout
 
 // useCallback은 함수를 캐싱하고 useMemo는 값을 캐싱한다.
+// _blank 사용시 보안을 확실하게 하기 위해 noreferrer와 noopener를 꼭 명시해주어야 한다.
