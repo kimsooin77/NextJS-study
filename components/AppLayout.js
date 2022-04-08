@@ -6,6 +6,7 @@ import { useState } from 'react';
 import UserProfile from '../components/UserProfile';
 import LoginForm from '../components/LoginForm';
 import styled from 'styled-components';
+import { useSelector } from "react-redux";
 
 // 최적화를 위해 styled-component로 스타일 정의
 const SearchInput = styled(Input.Search)`
