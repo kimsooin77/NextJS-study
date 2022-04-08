@@ -3,6 +3,8 @@ import {Form, Input, Button} from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import useinput from "../hooks/useinput";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../reducers";
 
 const ButtonWrapper = styled.div`
     margin-top : 10px;
@@ -12,13 +14,15 @@ const FormWrapper = styled(Form)`
 `;
 
 // eslint-disable-next-line react/prop-types
-const  LoginForm = ({setIsLoggedIn}) => {
+const  LoginForm = () => {
     const [id, onChangeId] = useinput('');
     const [password, onChangePassword] = useinput('');
 
+    const dispatch = useDispatch(); 
+
     const onSubmitForm = useCallback(() => {
         console.log(id, password);
-        setIsLoggedIn(true);
+        dispatch(loginAction({id, password}));
     },[id, password]);
 
     return(
