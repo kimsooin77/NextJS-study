@@ -1,9 +1,14 @@
 import { createWrapper } from "next-redux-wrapper";
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducer from '../reducers';
 
 const configureStore = () => {
+    const middlewares = [];
+    const enhancer = process.env.NODE_ENV === 'production'
+    ? compose(applyMiddleware(...middlewares))
+    : composeWithDevTools(applyMiddleware(...middlewares))
     const store = createStore(reducer, enhancer);
     return store;
 };
@@ -15,3 +20,10 @@ const wrapper = createWrapper(configureStore, {
 export default wrapper;
 
 // action을 만들면 history(기록)으로 남는다.
+
+// history가 쌓이면 메모리도 많이 잡아먹고 중앙데이터들이 어떻게 변하는지 보이기때문에
+// 보안에도 취약할 수가 있다. 따라 첫번째는 배포용(devtools 연결X) 두번째는 개발용(devtools 연결O)
+// compose(applyMiddleware([]))
+// composeWithDevTools(applyMiddleware([]))
+
+// 개발자 도구에서 redux를 들어가보면 로그인 로그아웃 기록이 history에 저장되어 확인가능하다.
