@@ -3,7 +3,7 @@ export const initialState = {
         id : 1,
         User : {
             id : 1,
-            ninckname : "sooinkim",
+            nickname : "sooinkim",
         },
         content : "첫 번째 게시글 #next.js #coding",
         Images : [{
