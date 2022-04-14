@@ -7,13 +7,13 @@ export const initialState = {
         },
         content : "첫 번째 게시글 #next.js #coding",
         Images : [{
-            src : "https://www.pinterest.co.kr/pin/453385887498683277/"
+            src : '../pictures/outfit1.JPG'
         }, {
-            src : "https://www.pinterest.co.kr/pin/9288742973239063/"
+            src : '../pictures/outfit2.JPG'
         }, {
-            src : "https://www.pinterest.co.kr/pin/658440408031578921/"
+            src : '../pictures/outfit3.JPG'
         }],
-        Comments : [{
+        Comments : [ {
             User : {
                 nickname : "fashion",
             },
@@ -25,7 +25,7 @@ export const initialState = {
             content : "색감이 예쁘네요~"
         }]
     }],
-    ImagePaths : [],
+    imagePaths : [],
     postAdded : false,
 }
 

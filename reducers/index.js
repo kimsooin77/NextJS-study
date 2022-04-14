@@ -7,7 +7,7 @@ import { combineReducers } from "redux";
 
 // ssr을 위하여 index 리듀서 추가(HTDRATE)
 const rootReducer = combineReducers({
-    index :  (state = initialState, action) => {
+    index :  (state = {}, action) => {
         switch (action.type) {
             case HYDRATE : 
                 console.log('HYDRATE', action);
