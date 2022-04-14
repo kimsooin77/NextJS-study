@@ -7,11 +7,11 @@ export const initialState = {
         },
         content : "첫 번째 게시글 #next.js #coding",
         Images : [{
-            src : '../pictures/outfit1.JPG'
+            src : 'https://i.pinimg.com/564x/09/43/f1/0943f1f3a3badf9b03b19e01f84e6810.jpg'
         }, {
-            src : '../pictures/outfit2.JPG'
+            src : 'https://i.pinimg.com/236x/08/fb/db/08fbdbb51fdf1148ce6a67d2fe6c22f2.jpg'
         }, {
-            src : '../pictures/outfit3.JPG'
+            src : 'https://i.pinimg.com/236x/00/8e/35/008e3564d0892d94a5e34a980b25ef9b.jpg'
         }],
         Comments : [ {
             User : {
