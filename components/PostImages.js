@@ -28,7 +28,7 @@ const PostImages = ({ images }) => {
     }
     return (
         <>
-            <img style={{width : '50%', display : 'inline-block'}} role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom}></img>   
+            <img style={{width : '50%', display : 'inline-block'}} src={images[0].src} alt={images[0].src} onClick={onZoom}></img>   
             <div
                 role="presentation"
                 style={{ display : 'inline-block' , width :'50%',  textAlign : 'center', verticalAlign : 'middle'  }}
