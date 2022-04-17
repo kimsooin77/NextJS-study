@@ -1,4 +1,6 @@
+import axios from 'axios';
 import {all, fork, delay, takeLatest, put} from 'redux-saga/effects';
+
 
 function addPostAPI(data) {
     return axios.post('/api/post', data) 
@@ -26,7 +28,6 @@ function* watchAddPost() {
 
 export default function* postSaga() {
     yield all([
-        fork(watchLogIn),
-        fork(watchLogOut),
+        fork(watchAddPost),
     ])
 }
