@@ -6,9 +6,15 @@ import LoginForm from "../components/LoginForm";
 import propTypes from "prop-types";
 import useinput from "../hooks/useinput";
 import styled from "styled-components";
+import { SIGN_UP_REQUEST } from "../reducers/user";
+import { useDispatch, useSelector } from "react-redux";
 
 const SignUp = () => {
-    const [id, onChangeId] = useinput('');
+
+    const dispatch = useDispatch();
+    const {signUpLoading} = useSelector((state) => state.user);
+
+    const [email, onChangeEmail] = useinput('');
     const [nickname, onchangeNickname] = useinput('');
 
     const [password, onChangePassword] = useinput('');
@@ -33,7 +39,11 @@ const SignUp = () => {
         return setTermError(true);
       }
       console.log(password, passwordCheck, term);
-     },[password, passwordCheck, term]);
+      dispatch({
+        type : SIGN_UP_REQUEST,
+        data : {email, password, nickname}
+      })
+    },[email, password, passwordCheck, term]);
 
     const ErrorMessage = styled.div`
     color : red;
@@ -47,9 +57,9 @@ const SignUp = () => {
           
           <Form onFinish={onSubmit}>
             <div>
-              <label htmlFor="user-id">아이디</label>
+              <label htmlFor="user-email">이메일</label>
               <br />
-              <Input name="user-id" value={id} required onChange={onChangeId} />
+              <Input name="user-email" type="email" value={email} required onChange={onChangeEmail} />
             </div>
             <div>
               <label htmlFor="user-nick">닉네임</label>
@@ -78,7 +88,7 @@ const SignUp = () => {
               {termError && <ErrorMessage>약관에 동의가 필요합니다.</ErrorMessage>}
             </div>
             <div style={{marginTop : 10}}>
-              <Button type="primary" htmlType="submit">가입</Button>
+              <Button type="primary" htmlType="submit" loading={signUpLoading}>가입</Button>
             </div>
           </Form>
         </AppLayout>

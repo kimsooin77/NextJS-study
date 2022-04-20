@@ -9,7 +9,7 @@ const App = ( { Component } ) => {
     )
 }
 
-App.prototype = {
+App.propTypes = {
     Component : propTypes.elementType.isRequired,
 }
 

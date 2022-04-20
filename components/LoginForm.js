@@ -16,26 +16,26 @@ const FormWrapper = styled(Form)`
 
 // eslint-disable-next-line react/prop-types
 const  LoginForm = () => {
-    const [id, onChangeId] = useinput('');
+    const [email, onChangeEmail] = useinput('');
     const [password, onChangePassword] = useinput('');
 
     const dispatch = useDispatch(); 
-    const {isLogginIn} = useSelector((state) => state.user);
+    const {logInLoading} = useSelector((state) => state.user);
  
     const onSubmitForm = useCallback(() => {
-        console.log(id, password);
-        dispatch(loginRequestAction({id, password}));
-    },[id, password]);
+        dispatch(loginRequestAction({email, password}));
+    },[email, password]);
 
     return(
         <FormWrapper onFinish={onSubmitForm}>
             <div>
-                <label htmlFor="user-id">아이디</label>
+                <label htmlFor="user-email">이메일</label>
                 <br />
                 <Input 
-                name="user-id" 
-                value={id} 
-                onChange={onChangeId} 
+                name="user-email" 
+                type="email"
+                value={email} 
+                onChange={onChangeEmail} 
                 required 
                 />
             </div>
@@ -50,7 +50,7 @@ const  LoginForm = () => {
                 />
             </div>
             <ButtonWrapper>
-                <Button type="primary" htmlType="submit" loading={isLogginIn}>로그인</Button>
+                <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
                 <Link href="/signup"><a><Button>회원가입</Button></a></Link>
             </ButtonWrapper>
         </FormWrapper>
