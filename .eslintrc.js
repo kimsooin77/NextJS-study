@@ -26,6 +26,7 @@ export default {
         "react/jsx-filename-extension" : "off",
         "react/jsx-one-expression-per-line" : "off",
         "object-curly-newline" : "off",
-        "linebreak-style" : 0
+        "linebreak-style" : 0,
+        "no-param-reassign" : "off"
     }
 }
