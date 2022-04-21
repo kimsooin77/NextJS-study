@@ -1,6 +1,12 @@
 import produce from "immer";
 
 export const initialState = {
+    followLoading : false,
+    followDone : false, // 팔로우 시도중
+    followError : null,
+    unfollowLoading : false,
+    unfollowDone : false, // 언팔로우 시도중
+    unfollowError : null,
     logInLoading : false,
     logInDone : false, // 로그인 시도중
     logInError : null,
@@ -72,6 +78,36 @@ export const logoutRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
         switch (action.type) {
+            case FOLLOW_REQUEST:
+                draft.followLoading = true;
+                draft.followDone = false;
+                draft.followError = null;
+                break;
+            case FOLLOW_SUCCESS:
+                draft.followLoading = false;
+                draft.followDone = true;
+                draft.me.Followings.push({id : action.data}); // 내 팔로잉 목록에 액션으로 받은 데이터인 아이디를 넣어줌
+                break;
+            case FOLLOW_FAILURE:
+                draft.followLoading = false;
+                draft.followError = action.error;
+                break;
+            case UNFOLLOW_REQUEST:
+                draft.unfollowLoading = true;
+                draft.unfollowDone = false;
+                draft.unfollowError = null;
+                break;
+            case UNFOLLOW_SUCCESS:
+                draft.unfollowLoading = false;
+                draft.unfollowDone = true;
+                // 아이디가 같지 않은 사람만 남겨둠(언팔로우 한 사람은 제외됨)
+                draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data)
+                break;
+            case UNFOLLOW_FAILURE:
+                draft.unfollowLoading = false;
+                draft.unfollowDone = false;
+                draft.unfollowError = action.error;
+                break;
             case LOG_IN_REQUEST:
                 draft.logInLoading = true;
                 draft.logInDone = false;
