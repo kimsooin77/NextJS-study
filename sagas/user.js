@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {all, fork, put, takeLatest, delay} from 'redux-saga/effects';
+import {all, fork, put, takeLatest, delay, call} from 'redux-saga/effects';
 import { 
     LOG_IN_SUCCESS, LOG_OUT_SUCCESS, SIGN_UP_SUCCESS,
     LOG_IN_REQUEST, LOG_OUT_REQUEST, SIGN_UP_REQUEST,
@@ -24,9 +24,7 @@ function logOutAPI(data) {
     return axios.post('/api/logout', data)
 }
 
-function signUpAPI(data) {
-    return axios.post('/api/signup', data)
-}
+
 
 
 function* follow(action) {
@@ -90,9 +88,14 @@ function* logOut() {
     }
 }
 
-function* signUp() {
+function signUpAPI(data) {
+    return axios.post('http://localhost:3065/user', data) // daata는 email,password,nickname이 들어있는 객체이다.
+}
+
+function* signUp(action) {
     try{
-        yield delay(1000);
+        const result = yield call(signUpAPI, action.data);
+        console.log(result);
         yield put({
             type : SIGN_UP_SUCCESS,
         });
