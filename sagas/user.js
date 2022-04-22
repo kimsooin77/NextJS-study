@@ -16,16 +16,6 @@ function unfollowAPI(data) {
     return axios.post('/api/unfollow', data); // 로그인 요청 보냄
 }
 
-function logInAPI(data) {
-    return axios.post('/api/login', data); // 로그인 요청 보냄
-}
-
-function logOutAPI(data) {
-    return axios.post('/api/logout', data)
-}
-
-
-
 
 function* follow(action) {
     try {
@@ -57,14 +47,18 @@ function* unfollow(action) {
     }
 }
 
+
+function logInAPI(data) {
+    return axios.post('/user/login', data); // 로그인 요청 보냄
+}
+
 function* logIn(action) {
     try {
-        // const result = yield call(logInAPI, action.data) // 로그인 요청에 대한 결과값을 받아서 변수에 저장
-        yield delay(1000);
+        const result = yield call(logInAPI, action.data) // 로그인 요청에 대한 결과값을 받아서 변수에 저장
+        
         yield put({
             type : LOG_IN_SUCCESS,
-            data : action.data,
-            // data : result.data // 로그인 성공시 결과값 안에 들어있는 data
+            data : result.data // 로그인 성공시 결과값 안에 들어있는 data
         });
     } catch(err) {
         yield put({
@@ -73,6 +67,12 @@ function* logIn(action) {
         });
     }
 }
+
+
+function logOutAPI(data) {
+    return axios.post('/user/logout', data)
+}
+
 
 function* logOut() {
     try{
@@ -89,7 +89,7 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-    return axios.post('http://localhost:3065/user', data) // daata는 email,password,nickname이 들어있는 객체이다.
+    return axios.post('/user', data) // daata는 email,password,nickname이 들어있는 객체이다.
 }
 
 function* signUp(action) {
