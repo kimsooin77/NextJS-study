@@ -86,7 +86,7 @@ function addCommentAPI(data) {
 
 function* addComment(action) {
     try {
-        const result = yield call(addPostAPI, action.data);
+        const result = yield call(addCommentAPI, action.data);
         yield put({
             type : ADD_COMMENT_SUCCESS,
             data : result.data,
@@ -126,3 +126,6 @@ export default function* postSaga() {
 
 
 // post saga에서 action 리듀서 호출
+
+// 요청을 보낸 사람이 누군지 알기 위해서는 쿠키를 보내주어야 하기 때문에 front에서는 withCredentials : true,
+// back에서는 cors에서 credentials  true를 해주어야함
