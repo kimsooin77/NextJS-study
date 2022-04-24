@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from "react";
+import React, {useState, useCallback, useEffect} from "react";
 import {Form, Input, Button} from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -20,7 +20,13 @@ const  LoginForm = () => {
     const [password, onChangePassword] = useinput('');
 
     const dispatch = useDispatch(); 
-    const {logInLoading} = useSelector((state) => state.user);
+    const {logInLoading, logInError} = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if(logInError) {
+            alert(logInError);
+        }
+    },[logInError]);
  
     const onSubmitForm = useCallback(() => {
         dispatch(loginRequestAction({email, password}));
