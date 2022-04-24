@@ -1,6 +1,4 @@
-import shortid from "shortid";
 import produce from "immer";
-import faker from 'faker';
 
 export const initialState = {
     mainPosts : [],
@@ -19,25 +17,6 @@ export const initialState = {
     removePostDone : false,
     removePostError : null,
 }
-
-export const generateDummyPost = (number) => Array(number).fill().map(() =>({
-    id : shortid.generate(),
-    User : {
-        id : shortid.generate(),
-        nickname : faker.name.findName()
-    },
-    content : faker.lorem.paragraph(),
-    Images : [{
-        src : faker.image.image(),
-    }],
-    Comments : [{
-        User : {
-            id : shortid.generate(),
-            nickname : faker.name.findName()
-        },
-        content : faker.lorem.sentence(),
-    }],
-}))
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -122,7 +101,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
                 post.Comments.unshift(action.data);
                 draft.addCommentLoading = false;
-                draft.addcommentd = true;
+                draft.addCommentDone = true;
                 break;
                 // 불변성을 지키기 위해 아래와 같이 작성했던 코드를 immer를 사용하면 위의 코드로 정리 가능
                 // const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
