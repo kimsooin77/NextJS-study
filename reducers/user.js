@@ -1,6 +1,9 @@
 import produce from "immer";
 
 export const initialState = {
+    loadMyInfoLoading : false,
+    loadMyInfoDone : false, // 유저 정보 가져오기 시도중
+    loadMyInfoError : null,
     followLoading : false,
     followDone : false, // 팔로우 시도중
     followError : null,
@@ -23,6 +26,10 @@ export const initialState = {
     signUpDate : {},
     loginData : {},
 }
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -78,6 +85,20 @@ export const logoutRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
         switch (action.type) {
+            case LOAD_MY_INFO_REQUEST:
+                draft.loadMyInfoLoading = true;
+                draft.loadMyInfoDone = false;
+                draft.loadMyInfoError = null;
+                break;
+            case LOAD_MY_INFO_SUCCESS:
+                draft.loadMyInfoLoading = false;
+                draft.loadMyInfoDone = true;
+                draft.me = action.data; // 내 팔로잉 목록에 액션으로 받은 데이터인 아이디를 넣어줌
+                break;
+            case LOAD_MY_INFO_FAILURE:
+                draft.loadMyInfoLoading = false;
+                draft.loadMyInfoError = action.error;
+                break;
             case FOLLOW_REQUEST:
                 draft.followLoading = true;
                 draft.followDone = false;
