@@ -43,9 +43,9 @@ export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 
-export const CHANGE_NICKNAME_REQUEST = 'SIGN_UP_REQUEST';
-export const CHANGE_NICKNAME_SUCCESS = 'SIGN_UP_SUCCESS';
-export const CHANGE_NICKNAME_FAILURE = 'SIGN_UP_FAILURE';
+export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
+export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
+export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
 
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
 export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
@@ -177,12 +177,14 @@ const reducer = (state = initialState, action) => {
                 draft.changeNicknameDone = false;
                 draft.changeNicknameError = null;
                 break;
-            case CHANGE_NICKNAME_SUCCESS : 
+            case CHANGE_NICKNAME_SUCCESS :
                 draft.changeNicknameLoading = false;
+                draft.me.nickname = action.data.nickname;
                 draft.changeNicknameDone = true;
                 break;
             case CHANGE_NICKNAME_FAILURE : 
                 draft.changeNicknameLoading = false;
+                draft.changeNicknameDone = false;
                 draft.changeNicknameError = action.error;
                 break;
             case ADD_POST_TO_ME : 

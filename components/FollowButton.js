@@ -22,6 +22,11 @@ const FollowButton = ({post}) => {
             })
         }
     }, [isFollowing]);
+
+    // 포스트 작성자의 아이디와 내 아이디가 같을 때는 팔로우 버튼이 뜨지 않게 처리
+    if(post.User.id === me.id) {
+        return null;
+    }
     return (
     
         <Button loading={followLoading  || unfollowLoading} onClick={onClickButton}>
