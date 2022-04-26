@@ -2,7 +2,7 @@ import { Button, Form, Input } from "antd"
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useinput from "../hooks/useinput";
-import { addPost } from "../reducers/post";
+import { addPost, UPLOAD_IMAGES_REQUEST } from "../reducers/post";
 
 const PostForm = () => {
     const {imagePaths, addPostDone} = useSelector((state) => state.post);
@@ -16,6 +16,17 @@ const PostForm = () => {
         }
     },[addPostDone]);
 
+    const onChangeImages = useCallback((e) => {
+        console.log('images', e.target.files); // 선택했던 이미지들에 대한 정보들 확인
+        const imageFormData = new FormData();
+        [].forEach.call(e.target.files, (f) => { // 유사배열 객체를 돌면서 이미지를 넣어줌
+            imageFormData.append('image', f); // router/post에 배열도는 'image'와 일치해야함
+        });
+        dispatch({
+            type : UPLOAD_IMAGES_REQUEST,
+            data : imageFormData,
+        })
+    })
     
     const onSubmit = useCallback(() => {
         dispatch(addPost(text));
@@ -34,7 +45,7 @@ const PostForm = () => {
             placeholder="어떤 룩이 제일 마음에 드시나요?"
             />
             <div>
-                <Input type="file" multiple hidden ref={imageInput} />
+                <Input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
                 <Button onClick={onClickImageUpload}>이미지 업로드</Button>
                 <Button type="primary" style={{float : "right"}} htmlType="submit">짹짹</Button>
             </div>
