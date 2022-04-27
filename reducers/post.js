@@ -27,6 +27,8 @@ export const initialState = {
     uploadImagesError : null,
 }
 
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+
 export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST";
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
@@ -68,6 +70,9 @@ export const addComment = (data) =>({
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
         switch (action.type) {
+            case REMOVE_IMAGE :
+                draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+                break;
             case UPLOAD_IMAGES_REQUEST : 
                 draft.uploadImagesLoading = true;
                 draft.uploadImagesDone = false;
