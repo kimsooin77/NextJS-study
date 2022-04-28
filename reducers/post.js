@@ -144,6 +144,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 draft.addPostLoading = false;
                 draft.mainPosts.unshift(action.data); // dummyPost를 앞에 추가해야지 게시글이 위로 쌓임;
                 draft.addPostDone = true;
+                draft.imagePaths = [];
                 break;
             case ADD_POST_FAILURE : 
                 draft.addPostLoading = false;

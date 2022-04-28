@@ -14,21 +14,21 @@ const PostImages = ({ images }) => {
     if(images.length === 1){
         return(
             <>
-                <img role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />   
+                <img role="presentation" src={`http://localhost:3065/${images[0].src}`} alt={images[0].src} onClick={onZoom} />   
                 {showImagesZoom && <ImagesZoom image={images} onClose={onClose} />}
             </>
         )
     }
     if(images.length === 2) {
         <>
-            <img role="presentation" style={{width : '50%', display : 'inline-block'}} src={images[0].src} alt={images[0].src} onClick={onZoom} />   
-            <img role="presentation" style={{width : '50%', display : 'inline-block'}} src={images[1].src} alt={images[1].src} onClick={onZoom} />   
+            <img role="presentation" style={{width : '50%', display : 'inline-block'}} src={`http://localhost:3065/${images[0].src}`} alt={images[0].src} onClick={onZoom} />   
+            <img role="presentation" style={{width : '50%', display : 'inline-block'}} src={`http://localhost:3065/${images[1].src}`} alt={images[1].src} onClick={onZoom} />   
             {showImagesZoom && <ImagesZoom image={images} onClose={onClose} />}
         </>
     }
     return (
         <>
-            <img style={{width : '50%', display : 'inline-block'}} src={images[0].src} alt={images[0].src} onClick={onZoom}></img>   
+            <img style={{width : '50%', display : 'inline-block'}} src={`http://localhost:3065/${images[0].src}`} alt={images[0].src} onClick={onZoom}></img>   
             <div
                 role="presentation"
                 style={{ display : 'inline-block' , width :'50%',  textAlign : 'center', verticalAlign : 'middle'  }}
@@ -45,7 +45,7 @@ const PostImages = ({ images }) => {
 }
 
 PostImages.propTypes = {
-    images : propTypes.arrayOf(propTypes.object),
+    images : propTypes.arrayOf(propTypes.object).isRequired,
 }
 
 export default PostImages;
