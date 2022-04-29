@@ -11,10 +11,15 @@ const rootReducer = combineReducers({
         switch (action.type) {
             case HYDRATE : 
                 console.log('HYDRATE', action);
-                return { ...state, ...action.payload};
+                return action.payload;
             
-            default :
-                return state;
+            default : {
+                const combinedReducer = combineReducers({
+                    user,
+                    post,
+                });
+                return combinedReducer(state, action);
+            }
         }
     },
     user,
