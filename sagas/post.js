@@ -91,8 +91,8 @@ function* likePost(action) {
         })
     }
 }
-function loadPostsAPI(data) {
-    return axios.get('/posts', data) 
+function loadPostsAPI(lastId) {
+    return axios.get(`/posts?lastId=${lastId || 0}`) // get에서 data를 넣으려면 주소뒤에 ?키=값으로 쿼리스트링으로 전달
 }
 
 function* loadPosts(action) {
