@@ -4,6 +4,9 @@ export const initialState = {
     loadMyInfoLoading : false,
     loadMyInfoDone : false, // 유저 정보 가져오기 시도중
     loadMyInfoError : null,
+    loadUserLoading : false,
+    loadUserDone : false, // 유저 정보 가져오기 시도중
+    loadUserError : null,
     followLoading : false,
     followDone : false, // 팔로우 시도중
     followError : null,
@@ -32,8 +35,7 @@ export const initialState = {
     removeFollowerDone : false, // 팔로워 제거 시도중
     removeFollowerError : null,
     me : null,
-    signUpDate : {},
-    loginData : {},
+    userInfo : null,
 }
 
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
@@ -47,6 +49,10 @@ export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -138,6 +144,20 @@ const reducer = (state = initialState, action) => {
                 draft.loadMyInfoLoading = false;
                 draft.loadMyInfoError = action.error;
                 break;
+            case LOAD_USER_REQUEST:
+                draft.loadUserLoading = true;
+                draft.loadUserDone = false;
+                draft.loadUserError = null;
+                break;
+            case LOAD_USER_SUCCESS:
+                draft.loadUserLoading = false;
+                draft.loadUserDone = true;
+                draft.userInfo = action.data; 
+                break;
+            case LOAD_USER_FAILURE:
+                draft.loadUserLoading = false;
+                draft.loadUserError = action.error;
+                break;
             case FOLLOW_REQUEST:
                 draft.followLoading = true;
                 draft.followDone = false;
@@ -185,8 +205,8 @@ const reducer = (state = initialState, action) => {
                 break;
             case LOG_IN_SUCCESS:
                 draft.logInLoading = false;
-                draft.logInDone = true;
                 draft.me = action.data;
+                draft.logInDone = true;
                 break;
             case LOG_IN_FAILURE:
                 draft.logInLoading = false;
