@@ -2,11 +2,15 @@ import produce from "immer";
 
 export const initialState = {
     mainPosts : [],
+    singlePost : null,
     imagePaths : [],
     hasMorePost : true,
     loadPostsLoading : false,
     loadPostsDone : false,
     loadPostsError : null,
+    loadPostLoading : false,
+    loadPostDone : false,
+    loadPostError : null,
     likePostLoading : false,
     likePostDone : false,
     likePostError : null,
@@ -47,6 +51,10 @@ export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
 export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
+
+export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST";
+export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS";
+export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE";
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -101,7 +109,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 draft.uploadImagesError = null;
                 break;
             case UPLOAD_IMAGES_SUCCESS : {
-                draft.imagePaths = action.data; // routes/post에서 res.json으로 받아온 이미지 주소
+                draft.imagePaths = draft.imagePaths.concat(action.data); // routes/post에서 res.json으로 받아온 이미지 주소
                 draft.uploadImagesLoading = false;
                 draft.uploadImagesDone = true;
                 break;
@@ -151,11 +159,26 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 draft.loadPostsLoading = false;
                 draft.loadPostsDone = true;
                 draft.mainPosts = draft.mainPosts.concat(action.data);
-                draft.hasMorePost = draft.mainPosts.length === 10;
+                draft.hasMorePost = action.data.length === 10;
                 break;
             case LOAD_POSTS_FAILURE : 
                 draft.loadPostsLoading = false;
                 draft.loadPostsError = action.error;
+                break;
+            case LOAD_POST_REQUEST : 
+                draft.loadPostLoading = true;
+                draft.loadPostDone = false;
+                draft.loadPostError = null;
+                break;
+            case LOAD_POST_SUCCESS :
+                draft.loadPostLoading = false;
+                draft.loadPostDone = true;
+                draft.singlePost = action.data;
+                draft.hasMorePost = action.data.length === 10;
+                break;
+            case LOAD_POST_FAILURE : 
+                draft.loadPostLoading = false;
+                draft.loadPostError = action.error;
                 break;
             case ADD_POST_REQUEST : 
                 draft.addPostLoading = true;

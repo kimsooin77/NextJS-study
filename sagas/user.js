@@ -92,25 +92,7 @@ function* changeNickname(action) {
     }
 }
 
-function loadMyInfoAPI() {
-    return axios.get('/user');
-}
 
-function* loadMyInfo() {
-    try {
-        const result = yield call(loadMyInfoAPI);
-        yield put({
-            type : LOAD_MY_INFO_SUCCESS,
-            data : result.data,
-        });
-    } catch(err) {
-        console.error(err);
-        yield put({
-            type : LOAD_MY_INFO_FAILURE,
-            error : err.response.data, 
-        });
-    }
-}
 
 function loadUserAPI(data) {
     return axios.get(`/user/${data}`);
@@ -126,6 +108,26 @@ function* loadUser(action) {
     } catch(err) {
         yield put({
             type : LOAD_USER_FAILURE,
+            error : err.response.data, 
+        });
+    }
+}
+
+function loadMyInfoAPI() {
+    return axios.get('/user');
+}
+
+function* loadMyInfo() {
+    try {
+        const result = yield call(loadMyInfoAPI);
+        yield put({
+            type : LOAD_MY_INFO_SUCCESS,
+            data : result.data,
+        });
+    } catch(err) {
+        console.error(err);
+        yield put({
+            type : LOAD_MY_INFO_FAILURE,
             error : err.response.data, 
         });
     }
@@ -153,7 +155,7 @@ function* follow(action) {
 
 
 function unfollowAPI(data) {
-    return axios.delete(`/user/${data}/follow`, data); // 로그인 요청 보냄
+    return axios.delete(`/user/${data}/follow`); // 로그인 요청 보냄
 }
 
 

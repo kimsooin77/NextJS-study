@@ -11,7 +11,8 @@ import {
     LIKE_POST_REQUEST, LIKE_POST_SUCCESS,
     UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, LIKE_POST_FAILURE, UNLIKE_POST_FAILURE,
     UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE,
-     RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE
+     RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE,
+     LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE
 } from '../reducers/post';
 import { ADD_POST_TO_ME , REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -97,7 +98,7 @@ function loadPostsAPI(lastId) {
 
 function* loadPosts(action) {
     try {
-        const result = yield call(loadPostsAPI, action.data);
+        const result = yield call(loadPostsAPI, action.lastId);
         yield put({
             type : LOAD_POSTS_SUCCESS,
             data : result.data,
@@ -105,6 +106,24 @@ function* loadPosts(action) {
     } catch(err) {
         yield put({
             type : LOAD_POSTS_FAILURE,
+            error : err.reponse.data 
+        })
+    }
+}
+function loadPostAPI(data) {
+    return axios.get(`/post/${data}`) // get에서 data를 넣으려면 주소뒤에 ?키=값으로 쿼리스트링으로 전달
+}
+
+function* loadPost(action) {
+    try {
+        const result = yield call(loadPostAPI, action.data);
+        yield put({
+            type : LOAD_POST_SUCCESS,
+            data : result.data,
+        });
+    } catch(err) {
+        yield put({
+            type : LOAD_POST_FAILURE,
             error : err.reponse.data 
         })
     }
@@ -192,8 +211,12 @@ function* watchUnlikePost() {
     yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
 
-function* watchLoadPost() {
+function* watchLoadPosts() {
     yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
+}
+
+function* watchLoadPost() {
+    yield takeLatest(LOAD_POST_REQUEST, loadPost);
 }
 
 function* watchAddPost() {
@@ -214,6 +237,7 @@ export default function* postSaga() {
         fork(watchUploadImages),
         fork(watchUnlikePost),
         fork(watchLikePost),
+        fork(watchLoadPosts),
         fork(watchLoadPost),
         fork(watchAddPost),
         fork(watchRemovePost),

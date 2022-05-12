@@ -1,21 +1,21 @@
-import axios from "axios";
 import React, { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
+import axios from "axios";
+import { useInView } from "react-intersection-observer";
 
 import AppLayout from "../components/AppLayout";
 import PostCard from "../components/PostCard";
 import PostForm from "../components/PostForm";
-import { LOAD_POSTS_REQUEST } from "../reducers/post";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import { LOAD_POSTS_REQUEST } from "../reducers/post";
 import wrapper from "../store/configureStore";
 
 const Home = () => {
+    const dispatch = useDispatch();
     const { me } = useSelector((state) => state.user); 
     const { mainPosts, hasMorePost, loadPostsLoading, retweetError } = useSelector((state) => state.post); 
     const [ref,inView] = useInView();
-    const dispatch = useDispatch();
 
     useEffect(
         () => {
@@ -40,12 +40,13 @@ const Home = () => {
             {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
             <div ref={hasMorePost && !loadPostsLoading ? ref : undefined} />
         </AppLayout>
-    )
-}
+    );
+};
 
 
 export const getServerSideProps = wrapper.getServerSideProps( (store) => async ({req}) => {
     const cookie = req ? req.headers.cookie : ''; // 쿠키 정보를 변수에 저장
+    console.log(cookie);
     axios.defaults.headers.Cookie = '';
     if(req && cookie) {
         axios.defaults.headers.Cookie = cookie;

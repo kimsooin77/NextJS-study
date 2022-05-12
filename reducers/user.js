@@ -110,7 +110,7 @@ const reducer = (state = initialState, action) => {
             case LOAD_FOLLOWERS_SUCCESS:
                 draft.loadFollowersLoading = false;
                 draft.loadFollowersDone = true;
-                draft.me.FOLLOW_REQUEST = action.data; // 내 팔로잉 목록에 액션으로 받은 데이터인 아이디를 넣어줌
+                draft.me.Followers = action.data; 
                 break;
             case LOAD_FOLLOWERS_FAILURE:
                 draft.loadFollowersLoading = false;
@@ -201,7 +201,7 @@ const reducer = (state = initialState, action) => {
             case LOG_IN_REQUEST:
                 draft.logInLoading = true;
                 draft.logInDone = false;
-                draft.logInError = false;
+                draft.logInError = null;
                 break;
             case LOG_IN_SUCCESS:
                 draft.logInLoading = false;
@@ -210,7 +210,6 @@ const reducer = (state = initialState, action) => {
                 break;
             case LOG_IN_FAILURE:
                 draft.logInLoading = false;
-                draft.logInDone = false;
                 draft.logInError = action.error;
                 break;
             case LOG_OUT_REQUEST : 
