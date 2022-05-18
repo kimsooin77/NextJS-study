@@ -115,7 +115,7 @@ function* loadUserPosts(action) {
 }
 
 function loadHashtagPostsAPI(data, lastId) {
-    return axios.get(`/posts?${data}?lastId=${lastId || 0}`) // get에서 data를 넣으려면 주소뒤에 ?키=값으로 쿼리스트링으로 전달
+    return axios.get(`/posts?${encodeURIComponenet(data)}?lastId=${lastId || 0}`) // get에서 data를 넣으려면 주소뒤에 ?키=값으로 쿼리스트링으로 전달
 }
 
 function* loadHashtagPosts(action) {

@@ -5,7 +5,7 @@ import propTypes from 'prop-types';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
 import { useDispatch } from 'react-redux';
 
-const FollowList = ( {header, data} ) => {
+const FollowList = ( {header, data, onClickMore, loading} ) => {
     const dispatch = useDispatch();
     
     const onCancel = (id) => () => {
@@ -30,7 +30,7 @@ const FollowList = ( {header, data} ) => {
             size="small"
             // eslint-disable-next-line react/jsx-no-duplicate-props
             header={<div>{header}</div>}
-            loadMore={<div style={{textAlign : "center", margin: "10px 0"}}><Button>더 보기</Button></div>}
+            loadMore={<div style={{textAlign : "center", margin: "10px 0"}}><Button onClick={onClickMore} loading={loading}>더 보기</Button></div>}
             bordered
             dataSource={data}
             renderItem={(item) => (
@@ -47,6 +47,8 @@ const FollowList = ( {header, data} ) => {
 FollowList.propTypes = {
     header : propTypes.string.isRequired,
     data : propTypes.array.isRequired,
+    onClickMore : propTypes.func.isRequired,
+    loading : propTypes.bool.isRequired,
 };
 
 export default FollowList;
