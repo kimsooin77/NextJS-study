@@ -95,7 +95,6 @@ export const loginRequestAction = (data) => {
 export const logoutRequestAction = (data) => {
     return {
         type : LOG_OUT_REQUEST,
-        data,
     }
 }
 

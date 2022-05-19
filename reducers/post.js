@@ -5,33 +5,33 @@ export const initialState = {
     singlePost : null,
     imagePaths : [],
     hasMorePost : true,
-    loadPostsLoading : false,
-    loadPostsDone : false,
-    loadPostsError : null,
-    loadPostLoading : false,
-    loadPostDone : false,
-    loadPostError : null,
-    likePostLoading : false,
-    likePostDone : false,
-    likePostError : null,
-    unlikePostLoading : false,
-    unlikePostDone : false,
-    unlikePostError : null,
-    addPostLoading : false,
-    addPostDone : false,
-    addPostError : null,
-    addCommentLoading : false,
-    addCommentDone : false,
-    addCommentError : null,
-    removePostLoading : false,
-    removePostDone : false,
-    removePostError : null,
-    uploadImagesLoading : false,
-    uploadImagesDone : false,
-    uploadImagesError : null,
-    retweetLoading : false,
-    retweetDone : false,
-    retweetError : null,
+    likePostLoading: false,
+    likePostDone: false,
+    likePostError: null,
+    unlikePostLoading: false,
+    unlikePostDone: false,
+    unlikePostError: null,
+    loadPostLoading: false,
+    loadPostDone: false,
+    loadPostError: null,
+    loadPostsLoading: false,
+    loadPostsDone: false,
+    loadPostsError: null,
+    addPostLoading: false,
+    addPostDone: false,
+    addPostError: null,
+    removePostLoading: false,
+    removePostDone: false,
+    removePostError: null,
+    addCommentLoading: false,
+    addCommentDone: false,
+    addCommentError: null,
+    uploadImagesLoading: false,
+    uploadImagesDone: false,
+    uploadImagesError: null,
+    retweetLoading: false,
+    retweetDone: false,
+    retweetError: null,
 }
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
@@ -52,9 +52,9 @@ export const LOAD_USER_POSTS_REQUEST = "LOAD_USER_POSTS_REQUEST";
 export const LOAD_USER_POSTS_SUCCESS = "LOAD_USER_POSTS_SUCCESS";
 export const LOAD_USER_POSTS_FAILURE = "LOAD_USER_POSTS_FAILURE";
 
-export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAGE_POSTS_REQUEST";
-export const LOAD_HASHTAG_POSTS_SUCCESS = "LOAD_HASHTAGE_POSTS_SUCCESS";
-export const LOAD_HASHTAG_POSTS_FAILURE = "LOAD_HASHTAGE_POSTS_FAILURE";
+export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAG_POSTS_REQUEST";
+export const LOAD_HASHTAG_POSTS_SUCCESS = "LOAD_HASHTAG_POSTS_SUCCESS";
+export const LOAD_HASHTAG_POSTS_FAILURE = "LOAD_HASHTAG_POSTS_FAILURE";
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -158,6 +158,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 draft.unlikePostLoading = false;
                 draft.unlikePostError = action.error;
                 break;
+            case LOAD_POST_REQUEST : 
+                draft.loadPostLoading = true;
+                draft.loadPostDone = false;
+                draft.loadPostError = null;
+                break;
+            case LOAD_POST_SUCCESS :
+                draft.loadPostLoading = false;
+                draft.loadPostDone = true;
+                draft.singlePost = action.data;
+                break;
+            case LOAD_POST_FAILURE : 
+                draft.loadPostLoading = false;
+                draft.loadPostError = action.error;
+                break;
             case LOAD_USER_POSTS_REQUEST :
             case LOAD_HASHTAG_POSTS_REQUEST : 
             case LOAD_POSTS_REQUEST : 
@@ -179,21 +193,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 draft.loadPostsLoading = false;
                 draft.loadPostsError = action.error;
                 break;
-            case LOAD_POST_REQUEST : 
-                draft.loadPostLoading = true;
-                draft.loadPostDone = false;
-                draft.loadPostError = null;
-                break;
-            case LOAD_POST_SUCCESS :
-                draft.loadPostLoading = false;
-                draft.loadPostDone = true;
-                draft.singlePost = action.data;
-                draft.hasMorePost = action.data.length === 10;
-                break;
-            case LOAD_POST_FAILURE : 
-                draft.loadPostLoading = false;
-                draft.loadPostError = action.error;
-                break;
+            
             case ADD_POST_REQUEST : 
                 draft.addPostLoading = true;
                 draft.addPostDone = false;
@@ -207,7 +207,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 break;
             case ADD_POST_FAILURE : 
                 draft.addPostLoading = false;
-                draft.addPostDone = false;
                 draft.addPostError = action.error;
                 break;
             case REMOVE_POST_REQUEST : 
@@ -250,7 +249,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 // };
             }
             case ADD_COMMENT_FAILURE : 
-                draft.addCommentLoading = false;
+                draft.addCommentLoading = false
                 draft.addCommentDone = false;
                 draft.addCommentError = action.error;
                 break;

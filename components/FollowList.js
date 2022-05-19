@@ -41,7 +41,11 @@ const FollowList = ( {header, data, onClickMore, loading} ) => {
                 </List.Item>
             )}
         />
-    )
+    );
+}
+
+FollowList.defaultProps = {
+    data: [],
 };
 
 FollowList.propTypes = {

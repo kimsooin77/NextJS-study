@@ -1,14 +1,14 @@
 import { Button, Form, Input } from "antd"
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useinput from "../hooks/useinput";
+import useInput from "../hooks/useInput";
 import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from "../reducers/post";
 
 const PostForm = () => {
     const {imagePaths, addPostDone} = useSelector((state) => state.post);
     const dispatch = useDispatch();
     const imageInput = useRef();
-    const [text, onChangeText, setText] = useinput('');
+    const [text, onChangeText, setText] = useInput('');
 
     useEffect(() => {
         if(addPostDone) {
@@ -41,7 +41,7 @@ const PostForm = () => {
             type : UPLOAD_IMAGES_REQUEST,
             data : imageFormData,
         })
-    })
+    },[])
     
     
 
@@ -54,7 +54,7 @@ const PostForm = () => {
             type : REMOVE_IMAGE,
             data : index,
         })
-    })
+    },[]);
 
     return (
         <Form style={{margin : '10px 0 20px'}} encType="multipart/form-data" onFinish={onSubmit}>

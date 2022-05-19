@@ -26,6 +26,7 @@ const Home = () => {
               lastId,
             });
           }
+          
         },[inView, hasMorePost, loadPostsLoading, mainPosts]);
 
     useEffect(() => {
@@ -44,23 +45,21 @@ const Home = () => {
 };
 
 
-export const getServerSideProps = wrapper.getServerSideProps( (store) => async ({req}) => {
-    const cookie = req ? req.headers.cookie : ''; // 쿠키 정보를 변수에 저장
-    console.log(cookie);
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : '';
     axios.defaults.headers.Cookie = '';
-    if(req && cookie) {
-        axios.defaults.headers.Cookie = cookie;
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
     }
-    store.dispatch({
-        type : LOAD_MY_INFO_REQUEST,
+    context.store.dispatch({
+      type: LOAD_MY_INFO_REQUEST,
     });
-    store.dispatch({
-        type : LOAD_POSTS_REQUEST,
+    context.store.dispatch({
+      type: LOAD_POSTS_REQUEST,
     });
-    store.dispatch(END); // 디스패치가 성공하기까지 시간을 벌어주기 위해 적용
-    await store.sagaTask.toPromise();
-
-}); 
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  });
 
 // 서버사이드렌더링을 위한 준비 (Home보다 먼저 실행된다.)
 // 서버사이드렌더링은 처음 렌더링 시 백엔드까지 한번에 갔다가 응답을 받아와 브라우저에서 요청을 두번 하지 않아도돼

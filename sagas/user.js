@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {all, fork, put, takeLatest, delay, call} from 'redux-saga/effects';
+import {all, fork, put, takeLatest, call} from 'redux-saga/effects';
 import { 
     LOG_IN_SUCCESS, LOG_OUT_SUCCESS, SIGN_UP_SUCCESS,
     LOG_IN_REQUEST, LOG_OUT_REQUEST, SIGN_UP_REQUEST,
@@ -17,7 +17,7 @@ import {
 
 
 function removeFollowerAPI(data) {
-    return axios.delete(`/user/follower/${data}`)
+    return axios.delete(`/user/follower/${data}`);
 }
 
 function* removeFollower(action) {
@@ -25,7 +25,7 @@ function* removeFollower(action) {
         const result = yield call(removeFollowerAPI, action.data);
         yield put({
             type : REMOVE_FOLLOWER_SUCCESS,
-            data : result.data
+            data : result.data,
         })
     }catch(err) {
         yield put({
@@ -36,7 +36,7 @@ function* removeFollower(action) {
 }
 
 function loadFollowersAPI(data) {
-    return axios.get('/user/followers', data)
+    return axios.get('/user/followers', data);
 }
 
 function* loadFollowers(action) {
@@ -44,7 +44,7 @@ function* loadFollowers(action) {
         const result = yield call(loadFollowersAPI, action.data);
         yield put({
             type : LOAD_FOLLOWERS_SUCCESS,
-            data : result.data
+            data : result.data,
         })
     }catch(err) {
         yield put({
@@ -92,8 +92,6 @@ function* changeNickname(action) {
     }
 }
 
-
-
 function loadUserAPI(data) {
     return axios.get(`/user/${data}`);
 }
@@ -133,6 +131,63 @@ function* loadMyInfo() {
     }
 }
 
+function logInAPI(data) {
+    return axios.post('/user/login', data); // 로그인 요청 보냄
+}
+
+function* logIn(action) {
+    try {
+        const result = yield call(logInAPI, action.data); // 로그인 요청에 대한 결과값을 받아서 변수에 저장
+        
+        yield put({
+            type : LOG_IN_SUCCESS,
+            data : result.data, // 로그인 성공시 결과값 안에 들어있는 data
+        });
+    } catch(err) {
+        console.error(err);
+        yield put({
+            type : LOG_IN_FAILURE,
+            error : err.response.data, // 로그인 실패시 결과값 안에 들어있는 data
+        });
+    }
+}
+
+function logOutAPI() {
+    return axios.post('/user/logout')
+}
+
+function* logOut() {
+    try{
+        yield call(logOutAPI);
+        yield put({
+            type : LOG_OUT_SUCCESS,
+        });
+    } catch (err) {
+        yield put({
+            type : LOG_OUT_FAILURE,
+            error : err.response.data,
+        })
+    }
+}
+
+function signUpAPI(data) {
+    return axios.post('/user', data) // data는 email,password,nickname이 들어있는 객체이다.
+}
+
+function* signUp(action) {
+    try{
+        const result = yield call(signUpAPI, action.data);
+        console.log(result);
+        yield put({
+            type : SIGN_UP_SUCCESS,
+        });
+    } catch (err) {
+        yield put({
+            type : SIGN_UP_FAILURE,
+            error : err.response.data,
+        })
+    }
+}
 
 function followAPI(data) {
     return axios.patch(`/user/${data}/follow`); 
@@ -158,7 +213,6 @@ function unfollowAPI(data) {
     return axios.delete(`/user/${data}/follow`); // 로그인 요청 보냄
 }
 
-
 function* unfollow(action) {
     try {
         const result = yield call(unfollowAPI, action.data);
@@ -174,66 +228,6 @@ function* unfollow(action) {
     }
 }
 
-
-function logInAPI(data) {
-    return axios.post('/user/login', data); // 로그인 요청 보냄
-}
-
-function* logIn(action) {
-    try {
-        const result = yield call(logInAPI, action.data); // 로그인 요청에 대한 결과값을 받아서 변수에 저장
-        
-        yield put({
-            type : LOG_IN_SUCCESS,
-            data : result.data, // 로그인 성공시 결과값 안에 들어있는 data
-        });
-    } catch(err) {
-        console.error(err);
-        yield put({
-            type : LOG_IN_FAILURE,
-            error : err.response.data, // 로그인 실패시 결과값 안에 들어있는 data
-        });
-    }
-}
-
-
-function logOutAPI(data) {
-    return axios.post('/user/logout', data)
-}
-
-
-function* logOut() {
-    try{
-        yield call(logOutAPI);
-        yield put({
-            type : LOG_OUT_SUCCESS,
-        });
-    } catch (err) {
-        yield put({
-            type : LOG_OUT_FAILURE,
-            error : err.response.data,
-        })
-    }
-}
-
-function signUpAPI(data) {
-    return axios.post('/user', data) // daata는 email,password,nickname이 들어있는 객체이다.
-}
-
-function* signUp(action) {
-    try{
-        const result = yield call(signUpAPI, action.data);
-        console.log(result);
-        yield put({
-            type : SIGN_UP_SUCCESS,
-        });
-    } catch (err) {
-        yield put({
-            type : SIGN_UP_FAILURE,
-            error : err.response.data,
-        })
-    }
-}
 
 function* watchRemoveFollower() {
     yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower);

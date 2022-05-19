@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
-import useSWR from 'swr';
-import AppLayout from '../components/AppLayout';
 import Head from 'next/head'
+import { useSelector } from "react-redux";
+import Router from 'next/router';
+import { END } from 'redux-saga';
+import axios from 'axios';
+import useSWR from 'swr';
+
+import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
-import { useDispatch, useSelector } from "react-redux";
-import Router from 'next/router';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from "../store/configureStore";
+import { LOAD_POSTS_REQUEST } from "../reducers/post";
 
 const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data);
  
@@ -56,20 +61,20 @@ const Profile = () => {
     );
 }
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-  console.log('getServerSideProps start');
-  console.log(req.headers);
-  const cookie = req ? req.headers.cookie : '';
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';
-  if (req && cookie) {
+  if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
-  store.dispatch({
+  context.store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
   });
-  store.dispatch(END);
-  console.log('getServerSideProps end');
-  await store.sagaTask.toPromise();
+  context.store.dispatch({
+    type: LOAD_POSTS_REQUEST,
+  });
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
 });
 
 export default Profile;
